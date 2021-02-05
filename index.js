@@ -9,7 +9,7 @@ const query = new Query();
 // Add departments, roles, employees
 // query.insertDepartment("HSE");
 // query.insertRole("Health & Safety Engineer 1", "55000", "5");
-// query.insertEmployee();
+// query.insertEmployee("Kelli", "Kaiser", "7", "1");
 
 // View departments, roles, employees
 // query.viewAllEmployees();

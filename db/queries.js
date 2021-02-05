@@ -60,7 +60,16 @@ class Query {
     insertRole(title, salary, departmentId) {
         connection.query(`INSERT INTO roles(title, salary, department_id)
         VALUES (?, ?, ?)`, [
-            title, salary, departmentId 
+            title, salary, departmentId
+        ], function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        })
+    }
+
+    insertEmployee(firstName, lastName, roleId, managerId) {
+        connection.query(`INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [
+            firstName, lastName, roleId, managerId
         ], function (err, data) {
             if (err) throw err;
             console.log(data);
