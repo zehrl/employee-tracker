@@ -41,9 +41,19 @@ class Query {
         })
     }
 
-    // viewBudget(department) {
-        
-    // }
+    viewBudget(department) {
+        connection.query(`SELECT SUM(roles.salary) as "Employee Budget for Engineering" FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.department_id = departments.id WHERE departments.id = 1`, function (err, data) {
+            if (err) throw err;
+
+            // pull out budget sum from query and assign it to the budgetRaw variable
+            const budgetRaw = data[0]["Employee Budget for Engineering"];
+
+            // convert budgetRaw to formatted curency string
+            const budgetStr = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseInt(budgetRaw));
+
+            console.log(`\nBudget of ${department}: ${budgetStr}`)
+        })
+    }
 
 }
 
