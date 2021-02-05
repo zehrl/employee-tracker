@@ -1,7 +1,7 @@
 // Dependencies
 const mysql = require('mysql');
 
-// Connections
+// Connection
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',

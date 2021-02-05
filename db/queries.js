@@ -6,20 +6,6 @@ const cTable = require("console.table");
 class Query {
     constructor() { }
 
-    // constructor(crud) {
-    //     if (
-    //         (crud !== "create") &&
-    //         (crud !== "read") &&
-    //         (crud !== "update") &&
-    //         (crud !== "delete")
-    //     ) {
-    //         throw new Error(`crud property must = create, read, update, or delete.`);
-    //     }
-
-    //     this.crud = crud;
-
-    // }
-
     viewAllEmployees() {
         connection.query(`SELECT id as "ID", first_name as "First Name", last_name as "Last Name" FROM employees`, function (err, data) {
             if (err) throw err;
@@ -65,8 +51,17 @@ class Query {
     insertDepartment(departmentName) {
         connection.query(`INSERT INTO departments(department_name) VALUES (?)`, [
             departmentName
-        ], 
-        function (err, data) {
+        ], function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        })
+    }
+
+    insertRole(title, salary, departmentId) {
+        connection.query(`INSERT INTO roles(title, salary, department_id)
+        VALUES (?, ?, ?)`, [
+            title, salary, departmentId 
+        ], function (err, data) {
             if (err) throw err;
             console.log(data);
         })
