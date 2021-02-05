@@ -7,26 +7,20 @@ const query = new Query();
 
 
 // Add departments, roles, employees
-
-
+// query.insertDepartment("HSE")
 
 // View departments, roles, employees
-
 // query.viewAllEmployees();
 // query.viewAllDepartments();
 // query.viewAllRoles();
 
 // Update employee roles
 
-
-// Bonus points if you're able to:
-
-
 // Update employee managers
 
 
 // View employees by manager
-query.viewByManager();
+// query.viewByManager();
 
 // Delete departments, roles, and employees
 

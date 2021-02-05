@@ -62,6 +62,16 @@ class Query {
         })
     }
 
+    insertDepartment(departmentName) {
+        connection.query(`INSERT INTO departments(department_name) VALUES (?)`, [
+            departmentName
+        ], 
+        function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        })
+    }
+
 }
 
 module.exports = Query;
