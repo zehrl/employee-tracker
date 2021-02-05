@@ -4,8 +4,8 @@ const cTable = require("console.table");
 
 // Query class to handle query requests
 class Query {
-    constructor(){}
-    
+    constructor() { }
+
     // constructor(crud) {
     //     if (
     //         (crud !== "create") &&
@@ -52,6 +52,13 @@ class Query {
             const budgetStr = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseInt(budgetRaw));
 
             console.log(`\nBudget of ${department}: ${budgetStr}`)
+        })
+    }
+
+    viewByManager() {
+        connection.query(`SELECT A.id as "ID", A.first_name as "First Name", A.last_name as "Last Name" FROM employees A, employees B WHERE A.manager_id = B.id AND A.manager_id = 1`, function (err, data) {
+            if (err) throw err;
+            console.table("\nManager's Employees", data);
         })
     }
 
