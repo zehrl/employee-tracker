@@ -6,6 +6,7 @@ const cTable = require("console.table");
 class Query {
     constructor() { }
 
+    // View departments, roles, and employees
     viewAllEmployees() {
         connection.query(`SELECT id as "ID", first_name as "First Name", last_name as "Last Name" FROM employees`, function (err, data) {
             if (err) throw err;
@@ -48,6 +49,7 @@ class Query {
         })
     }
 
+    // Add departments, roles, and employees
     insertDepartment(departmentName) {
         connection.query(`INSERT INTO departments(department_name) VALUES (?)`, [
             departmentName
@@ -75,6 +77,25 @@ class Query {
             console.log(data);
         })
     }
+
+    // Update employee roles
+    // query.updateRole();
+    updateRole(roleId, newTitle, newSalary, newDepartmentId) {
+        connection.query(`UPDATE roles SET title = ?, salary = ?, department_id = ?WHERE id = ?;`, [
+            newTitle, newSalary, newDepartmentId, roleId
+        ], function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        })
+    }
+
+    // Update employee managers
+    // query.updateManager();
+
+    // Delete departments, roles, and employees
+    // query.deleteDepartment();
+    // query.deleteRole();
+    // query.deleteEmployee();
 
 }
 
