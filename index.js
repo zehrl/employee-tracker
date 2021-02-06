@@ -20,7 +20,7 @@ const query = new Query();
 // query.updateRole("7", "Health & Safety Engineer 2", "69000", "5");
 
 // Update employee managers
-// query.updateManager();
+query.updateManager();
 
 // X - View employees by manager
 // query.viewByManager();

@@ -78,10 +78,9 @@ class Query {
         })
     }
 
-    // Update employee roles
-    // query.updateRole();
+    // Update employee roles & managers
     updateRole(roleId, newTitle, newSalary, newDepartmentId) {
-        connection.query(`UPDATE roles SET title = ?, salary = ?, department_id = ?WHERE id = ?;`, [
+        connection.query(`UPDATE roles SET title = ?, salary = ?, department_id = ? WHERE id = ?;`, [
             newTitle, newSalary, newDepartmentId, roleId
         ], function (err, data) {
             if (err) throw err;
@@ -89,11 +88,20 @@ class Query {
         })
     }
 
-    // Update employee managers
-    // query.updateManager();
+    // Updates the manager of an employee
+    // updateRole(employeeId, newManagerFirstName, newManagerLastName) {
+    //     connection.query(`UPDATE employees SET first_name = ?, last_name = ? WHERE id = ?;`, [
+    //         newTitle, newSalary, newDepartmentId, roleId
+    //     ], function (err, data) {
+    //         if (err) throw err;
+    //         console.log(data);
+    //     })
+    // }
 
     // Delete departments, roles, and employees
     // query.deleteDepartment();
+    
+
     // query.deleteRole();
     // query.deleteEmployee();
 
