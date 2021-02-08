@@ -20,15 +20,15 @@ const query = new Query();
 // query.updateRole("7", "Health & Safety Engineer 2", "69000", "5");
 
 // Update employee managers
-query.updateManager();
+query.updateManager(7, 1);
 
 // X - View employees by manager
 // query.viewByManager();
 
-// Delete departments, roles, and employees
-// query.deleteDepartment();
-// query.deleteRole();
-// query.deleteEmployee();
+// X - Delete departments, roles, and employees
+// query.deleteDepartment(4); //Operations
+// query.deleteRole(5); //Engineer Fellow
+// query.deleteEmployee(2); // Gordon Mathews
 
 // X - View the total utilized budget of a department -- ie the combined salaries of all employees in that department
 // query.viewBudget("Engineering");

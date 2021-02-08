@@ -89,21 +89,42 @@ class Query {
     }
 
     // Updates the manager of an employee
-    // updateRole(employeeId, newManagerFirstName, newManagerLastName) {
-    //     connection.query(`UPDATE employees SET first_name = ?, last_name = ? WHERE id = ?;`, [
-    //         newTitle, newSalary, newDepartmentId, roleId
-    //     ], function (err, data) {
-    //         if (err) throw err;
-    //         console.log(data);
-    //     })
-    // }
+    updateManager(employeeId, newManagerId) {
+        connection.query(`UPDATE employees SET manager_id = ? WHERE id = ?;`, [
+            newManagerId, employeeId
+        ], function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        })
+    }
 
     // Delete departments, roles, and employees
-    // query.deleteDepartment();
-    
+    deleteDepartment(departmentId) {
+        connection.query(`DELETE FROM departments WHERE id = ?;`, [
+            departmentId
+        ], function (err, data) {
+            if (err) throw err;
+            console.log("Deleted departement. Data: ", data);
+        })
+    }
 
-    // query.deleteRole();
-    // query.deleteEmployee();
+    deleteRole(roleId) {
+        connection.query(`DELETE FROM roles WHERE id = ?;`, [
+            roleId
+        ], function (err, data) {
+            if (err) throw err;
+            console.log("Deleted role. Data: ", data);
+        })
+    }
+
+    deleteEmployee(employeeId) {
+        connection.query(`DELETE FROM employees WHERE id = ?;`, [
+            employeeId
+        ], function (err, data) {
+            if (err) throw err;
+            console.log("Deleted employee. Data: ", data);
+        })
+    }
 
 }
 
