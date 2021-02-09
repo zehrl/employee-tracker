@@ -12,12 +12,12 @@ class Query {
 
     // View departments, roles, and employees
     viewAllEmployees() {
-        
+
         return new Promise((resolve, reject) => {
 
             connection.query(`SELECT id as "ID", first_name as "First Name", last_name as "Last Name" FROM employees`, function (err, data) {
                 if (err) {
-                    
+
                     throw err
                 } else {
                     console.table("\nAll Employees", data);
@@ -45,32 +45,45 @@ class Query {
         })
     }
 
-    // viewEmployeesByDeparment() {
-    //     return new Promise((resolve, reject) => {
+    viewEmployeesByDepartment(departmentId) {
 
-    //         connection.query(`SELECT * FROM departments`, function (err, data) {
-    //             if (err) {
-                    
-    //                 throw err
-    //             } else {
-    //                 console.table("\nAll Employees", data);
+        return new Promise((resolve, reject) => {
 
-    //                 resolve(data)
-    //             };
+            connection.query(`SELECT employees.first_name as "First Name", employees.last_name as "Last Name" FROM departments LEFT JOIN roles ON departments.id = roles.department_id LEFT JOIN employees ON roles.id = employees.role_id WHERE department_id = ?`, [
+                departmentId
+            ], function (err, data) {
+                if (err) {
 
-    //         })
+                    throw err
 
-    //     })
-    // }
+                } else {
+
+                    if (data.length === 0) {
+
+                        console.log("\nThere are no employees in that department.")
+
+                    } else {
+
+                        console.table("\nEmployees", data);
+
+                    }
+
+                    resolve(data)
+
+                };
+
+            })
+        })
+    }
 
     // Return all departments as an objct
     getAllDepartments() {
-        
+
         return new Promise((resolve, reject) => {
 
             connection.query(`SELECT * FROM departments`, function (err, data) {
                 if (err) {
-                    
+
                     throw err
                 } else {
                     // console.table("\nAll Employees", data);

@@ -87,7 +87,7 @@ const mainMenu = () => {
 
         })
         .catch(error => {
-            console.log("Uh oh! /n", error)
+            console.log("Uh oh! \n", error)
         })
 
 }
@@ -133,7 +133,7 @@ const viewAllEmployees = () => {
 
             })
             .catch(error => {
-                console.log("Uh oh! /n", error)
+                console.log("Uh oh! \n", error)
             })
     }
 }
@@ -144,52 +144,86 @@ const viewEmployeesByDepartment = () => {
     // Call query to return departments object with: id & department_name
     query.getAllDepartments().then((data, err) => {
 
-        // Reduce object to just department_name array
-        const choices = data.map((entry) => entry.department_name);
+        // Change object to inquirer friendly object using: name & value properties
+        const choices = data.map(entry => {
+            return {
+                name: entry.department_name,
+                value: entry.id
+            }
+        })
 
-        // Add choice to exit
-        choices.push("Exit")
+        // Add choice to exit  
+        choices.push("Back to main menu")
 
         // Prompt user for department selection
-        prompt(choices);
+        selectDepartmentPrompt(choices);
 
     });
 
-    const prompt = (choices) => {
+    const selectDepartmentPrompt = (choices) => {
         inquirer.prompt([
             {
                 type: "list",
-                name: "choice",
+                name: "id",
                 message: "\nSelect a department:",
                 choices
             }
         ])
-            .then(({ choice }) => {
-                console.log("Your choice was: ", choice)
+            .then(({ id }) => {
 
-                // if user selected exit, exit program
-                if (choice === "Exit") exit()
+                // Send user to main menu and exit current prompt
+                if (id === "Back to main menu") {
+                    mainMenu();
+                    return;
+                }
 
-                // switch (choice) {
-                //     case "Back to main menu":
-                //         mainMenu();
-                //         break;
-
-                //     case "Exit":
-                //         exit();
-                //         break;
-
-                //     default:
-                //         break;
-                // }
+                // Print employees list based on department id
+                query.viewEmployeesByDepartment(id).then(() => { nextPrompt() });
 
             })
             .catch(error => {
-                console.log("Uh oh! /n", error)
+                console.log("Uh oh! \n", error)
             })
-    }
+    };
 
-    // .then() query.viewEmployeesByDepartment
+    // Prompt that gives user next steps
+    const nextPrompt = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "\nWhat would you like to do?",
+                choices: [
+                    "Search again",
+                    "Main menu",
+                    "Exit"
+                ]
+            }
+        ])
+            .then(({ choice }) => {
+
+                switch (choice) {
+                    case "Search again":
+                        viewEmployeesByDepartment()
+                        break;
+
+                    case "Main menu":
+                        mainMenu()
+                        break;
+
+                    case "Exit":
+                        exit();
+                        break;
+
+                    default:
+                        break;
+                }
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error)
+            })
+    };
 
 }
 
