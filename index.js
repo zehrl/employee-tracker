@@ -41,9 +41,46 @@ const mainMenu = () => {
                     viewAllEmployees();
                     break;
 
+                case "View All Employees by Department":
+                    viewEmployeesByDepartment();
+                    break;
+
+                case "View All Employees by Manager":
+                    viewEmployeesByManager();
+                    break;
+
+                case "Add Employee":
+                    addEmployee();
+                    break;
+
+                case "Remove Employee":
+                    removeEmployee();
+                    break;
+
+                case "Update Employee Role":
+                    updateEmployeeRole();
+                    break;
+
+                case "Update Employee Manager":
+                    updateEmployeeManager();
+                    break;
+
+                case "View All Roles":
+                    viewAllRoles();
+                    break;
+
+                case "Add Role":
+                    addRole();
+                    break;
+
+                case "Remove Roll":
+                    removeRoll();
+                    break;
+
                 case "Exit":
                     exit();
                     break;
+
                 default:
                     break;
             }
@@ -102,6 +139,60 @@ const viewAllEmployees = () => {
 }
 
 // View All Employees by Department
+const viewEmployeesByDepartment = () => {
+
+    // Call query to return departments object with: id & department_name
+    query.getAllDepartments().then((data, err) => {
+
+        // Reduce object to just department_name array
+        const choices = data.map((entry) => entry.department_name);
+
+        // Add choice to exit
+        choices.push("Exit")
+
+        // Prompt user for department selection
+        prompt(choices);
+
+    });
+
+    const prompt = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "\nSelect a department:",
+                choices
+            }
+        ])
+            .then(({ choice }) => {
+                console.log("Your choice was: ", choice)
+
+                // if user selected exit, exit program
+                if (choice === "Exit") exit()
+
+                // switch (choice) {
+                //     case "Back to main menu":
+                //         mainMenu();
+                //         break;
+
+                //     case "Exit":
+                //         exit();
+                //         break;
+
+                //     default:
+                //         break;
+                // }
+
+            })
+            .catch(error => {
+                console.log("Uh oh! /n", error)
+            })
+    }
+
+    // .then() query.viewEmployeesByDepartment
+
+}
+
 
 // View All Employees by Manager
 

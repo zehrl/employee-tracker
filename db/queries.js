@@ -45,6 +45,45 @@ class Query {
         })
     }
 
+    // viewEmployeesByDeparment() {
+    //     return new Promise((resolve, reject) => {
+
+    //         connection.query(`SELECT * FROM departments`, function (err, data) {
+    //             if (err) {
+                    
+    //                 throw err
+    //             } else {
+    //                 console.table("\nAll Employees", data);
+
+    //                 resolve(data)
+    //             };
+
+    //         })
+
+    //     })
+    // }
+
+    // Return all departments as an objct
+    getAllDepartments() {
+        
+        return new Promise((resolve, reject) => {
+
+            connection.query(`SELECT * FROM departments`, function (err, data) {
+                if (err) {
+                    
+                    throw err
+                } else {
+                    // console.table("\nAll Employees", data);
+
+                    resolve(data)
+                };
+
+            })
+
+        })
+
+    }
+
     viewBudget(department) {
         connection.query(`SELECT SUM(roles.salary) as "Employee Budget for Engineering" FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.department_id = departments.id WHERE departments.id = 1`, function (err, data) {
             if (err) throw err;
