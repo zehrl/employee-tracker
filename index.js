@@ -55,6 +55,11 @@ const mainMenu = () => {
 
 }
 
+// TO DO
+// add .then() and prompt() functions
+// make sure queries give you what you want!
+
+
 // View All Employees
 const viewAllEmployees = () => {
 
