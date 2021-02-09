@@ -27,9 +27,10 @@ const mainMenu = () => {
                 "View All Roles",
                 "Add Role",
                 "Remove Roll",
-                "Exit"
-            ]
-            // pageSize: 
+                "Exit",
+            ],
+            loop: false,
+            pageSize: 11
 
         }
     ])
@@ -208,7 +209,7 @@ const viewEmployeesByDepartment = () => {
                         break;
 
                     case "Main menu":
-                        mainMenu()
+                        mainMenu();
                         break;
 
                     case "Exit":
@@ -230,6 +231,7 @@ const viewEmployeesByDepartment = () => {
 
 // View All Employees by Manager
 
+
 // Add Employee
 
 // Remove Employee
@@ -249,37 +251,6 @@ const exit = () => {
     console.log("\nQuitting program...\n")
     connection.end();
 }
-
-
-// X - Add departments, roles, employees
-// query.insertDepartment("HSE");
-// query.insertRole("Health & Safety Engineer 1", "55000", "5");
-// query.insertEmployee("Kelli", "Kaiser", "7", "1");
-
-// X - View departments, roles, employees
-// query.viewAllDepartments();
-// query.viewAllEmployees();
-// query.viewAllRoles();
-
-// X - Update employee roles
-// query.updateRole("7", "Health & Safety Engineer 2", "69000", "5");
-
-// X - Update employee managers
-// query.updateManager(7, 1);
-
-// X - View employees by manager
-// query.viewByManager();
-
-// X - Delete departments, roles, and employees
-// query.deleteDepartment(4); //Operations
-// query.deleteRole(5); //Engineer Fellow
-// query.deleteEmployee(2); // Gordon Mathews
-
-// X - View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-// query.viewBudget("Engineering");
-
-// quit connection
-// connection.end();
 
 // Start program
 mainMenu();
