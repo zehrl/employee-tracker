@@ -8,10 +8,21 @@ class Query {
 
     // View departments, roles, and employees
     viewAllEmployees() {
-        connection.query(`SELECT id as "ID", first_name as "First Name", last_name as "Last Name" FROM employees`, function (err, data) {
-            if (err) throw err;
-            console.table("\nAll Employees", data);
+        return new Promise((resolve, reject) => {
+
+            connection.query(`SELECT id as "ID", first_name as "First Name", last_name as "Last Name" FROM employees`, function (err, data) {
+                if (err) {
+                    return Promise.resolve("Failure")
+                    throw err
+                } else {
+                    console.table("\nAll Employees", data);
+                    resolve("Resolved")
+                };
+
+            })
+
         })
+
     }
 
     viewAllDepartments() {

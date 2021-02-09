@@ -1,9 +1,124 @@
+const connection = require("./db/connection");
+const inquirer = require("inquirer");
+const Query = require("./db/queries");
 
-const connection = require("./db/connection")
-const Query = require("./db/queries")
-
+// contains all query methods from queries.js
 const query = new Query();
 
+
+// Inquirer
+
+// Main menu
+const mainMenu = () => {
+
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "choice",
+            message: "\n\nWhat would you like to do?",
+            choices: [
+                "View All Employees",
+                "View All Employees by Department",
+                "View All Employees by Manager",
+                "Add Employee",
+                "Remove Employee",
+                "Update Employee Role",
+                "Update Employee Manager",
+                "View All Roles",
+                "Add Role",
+                "Remove Roll",
+                "Exit"
+            ]
+            // pageSize: 
+
+        }
+    ])
+        .then(({ choice }) => {
+            console.log("Your choice was: ", choice)
+
+            switch (choice) {
+                case "View All Employees":
+                    viewAllEmployees();
+                    break;
+
+                case "Exit":
+                    exit();
+                    break;
+                default:
+                    break;
+            }
+
+        })
+        .catch(error => {
+            console.log("Uh oh! /n", error)
+        })
+
+}
+
+// View All Employees
+const viewAllEmployees = () => {
+
+    // query all employees
+    query.viewAllEmployees().then(() => prompt());
+
+    const prompt = () => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "\nWhat would you like to do?",
+                choices: [
+                    "Back to main menu",
+                    "Exit"
+                ]
+            }
+        ])
+            .then(({ choice }) => {
+                console.log("Your choice was: ", choice)
+
+                switch (choice) {
+                    case "Back to main menu":
+                        mainMenu();
+                        break;
+
+                    case "Exit":
+                        exit();
+                        break;
+
+                    default:
+                        break;
+                }
+
+            })
+            .catch(error => {
+                console.log("Uh oh! /n", error)
+            })
+    }
+}
+
+// View All Employees by Department
+
+// View All Employees by Manager
+
+// Add Employee
+
+// Remove Employee
+
+// Update Employee Role
+
+// Update Employee Manager
+
+// View All Roles
+
+// Add Role
+
+// Remove Role
+
+// Exit
+const exit = () => {
+    console.log("\nQuitting program...\n")
+    connection.end();
+}
 
 
 // X - Add departments, roles, employees
@@ -19,8 +134,8 @@ const query = new Query();
 // X - Update employee roles
 // query.updateRole("7", "Health & Safety Engineer 2", "69000", "5");
 
-// Update employee managers
-query.updateManager(7, 1);
+// X - Update employee managers
+// query.updateManager(7, 1);
 
 // X - View employees by manager
 // query.viewByManager();
@@ -35,3 +150,6 @@ query.updateManager(7, 1);
 
 // quit connection
 // connection.end();
+
+// Start program
+mainMenu();
