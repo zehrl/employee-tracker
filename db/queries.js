@@ -158,6 +158,36 @@ class Query {
         })
     }
 
+    getRolesByDepartment(department_id) {
+
+        return new Promise((resolve, reject) => {
+
+            connection.query(`SELECT id, title, salary FROM roles WHERE department_id = ?`, [
+                department_id
+            ], function (err, data) {
+                if (err) {
+
+                    throw err
+
+                } else {
+
+                    if (data.length === 0) {
+                        console.log("\nThere are no roles in that department.\n")
+                        resolve(data)
+
+                    } else {
+
+                        resolve(data)
+
+                    }
+
+                };
+
+            })
+
+        })
+    }
+
     viewBudget(department) {
         connection.query(`SELECT SUM(roles.salary) as "Employee Budget for Engineering" FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.department_id = departments.id WHERE departments.id = 1`, function (err, data) {
             if (err) throw err;
@@ -239,20 +269,25 @@ class Query {
     }
 
     deleteRole(roleId) {
-        connection.query(`DELETE FROM roles WHERE id = ?;`, [
-            roleId
-        ], function (err, data) {
-            if (err) throw err;
-            console.log("Deleted role. Data: ", data);
+        return new Promise((resolve, reject) => {
+            connection.query(`DELETE FROM roles WHERE id = ?;`, [
+                roleId
+            ], function (err, data) {
+                if (err) throw err;
+                resolve(data);
+            })
         })
     }
 
     deleteEmployee(employeeId) {
-        connection.query(`DELETE FROM employees WHERE id = ?;`, [
-            employeeId
-        ], function (err, data) {
-            if (err) throw err;
-            console.log("Deleted employee. Data: ", data);
+        return new Promise((resolve, reject) => {
+            connection.query(`DELETE FROM employees WHERE id = ?;`, [
+                employeeId
+            ], function (err, data) {
+                if (err) throw err;
+                resolve(data);
+            })
+
         })
     }
 

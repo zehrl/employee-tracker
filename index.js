@@ -17,7 +17,7 @@ const mainMenu = () => {
             name: "choice",
             message: "\n\nWhat would you like to do?",
             choices: [
-                
+
                 // Employees Options
                 "View All Employees",
                 "View All Employees by Department",
@@ -26,7 +26,7 @@ const mainMenu = () => {
                 "Remove Employee",
                 "Update Employee Role",
                 "Update Employee Manager",
-                
+
                 // Roles options
                 "View All Roles",
                 "Add Role",
@@ -83,7 +83,7 @@ const mainMenu = () => {
                     break;
 
                 case "Remove Roll":
-                    removeRoll();
+                    removeRole();
                     break;
 
                 case "Exit":
@@ -364,7 +364,7 @@ const updateEmployeeManager = () => {
 // View All Roles
 
 const viewAllRoles = () => {
-    query.viewAllRoles().then(()=>{mainMenu()})
+    query.viewAllRoles().then(() => { mainMenu() })
 }
 
 // Add Role
@@ -378,11 +378,159 @@ const addRole = () => {
 
 // Remove Role
 
-const removeRoll = () => {
-    // Prompt user: Select department
+const removeRole = () => {
+    // Prompt user: Select department -> getAllDepartments()
+    query.getAllDepartments().then((data, err) => {
+
+        const choices = data.map(entry => {
+            return {
+                name: entry.department_name,
+                value: entry.id
+            }
+        })
+
+        choices.push("Back to main menu")
+
+        promptDepartments(choices);
+    })
+
+    const promptDepartments = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "departmentId",
+                message: "\nSelect a department that contains the role:",
+                choices
+            }
+        ])
+            .then(({ departmentId }) => {
+                // Send user to main menu and exit current prompt
+                if (departmentId === "Back to main menu") {
+                    mainMenu();
+                    return;
+                }
+
+                query.getRolesByDepartment(departmentId).then((data, err) => {
+
+                    // If there are no roles in the department
+                    if (data.length === 0) {
+                        removeRole();
+                    } else {
+
+                        const choices = data.map(entry => {
+                            return {
+                                name: entry.title,
+                                value: entry.id
+                            }
+                        })
+
+                        choices.push("Back to main menu")
+
+                        promptRoles(choices);
+                    }
+                });
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error);
+            })
+    };
+
     // Prompt user: Select role -> getRolesByDepartment(department_id)
+    const promptRoles = (choices) => {
+
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "roleId",
+                message: "\nSelect a role to remove:",
+                choices
+            }
+        ])
+            .then(({ roleId }) => {
+                // Return to main menu, else confirm role removal
+                if (roleId === "Back to main menu") {
+                    mainMenu();
+                } else {
+                    promptConfirm().then((reply) => {
+
+                        if (reply) {
+                            deleteRole(roleId);
+                        } else {
+                            removeRole();
+                        }
+                    })
+
+                }
+
+            })
+    }
+
+    const promptConfirm = () => {
+        return new Promise((resolve, reject) => {
+
+            inquirer.prompt([
+                {
+                    type: "confirm",
+                    name: "confirm",
+                    message: "\nAre you sure you would like to remove this role?"
+                }
+            ])
+                .then(({ confirm }) => {
+                    resolve(confirm)
+                })
+
+        })
+
+    }
+
     // deleteRole(roleId)
+    const deleteRole = (roleId) => {
+        query.deleteRole(roleId).then((data) => {
+            console.log("\nRole deleted successfully.\n");
+            nextPrompt();
+        })
+    }
+
     // nextPrompt()
+    const nextPrompt = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "\nWhat would you like to do?",
+                choices: [
+                    "Delete another role",
+                    "Main menu",
+                    "Exit"
+                ]
+            }
+        ])
+            .then(({ choice }) => {
+
+                switch (choice) {
+                    case "Search again":
+                        deleteRole()
+                        break;
+
+                    case "Main menu":
+                        mainMenu();
+                        break;
+
+                    case "Exit":
+                        exit();
+                        break;
+
+                    default:
+                        break;
+                }
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error)
+            })
+        }
+
 }
 
 // Exit
@@ -397,3 +545,4 @@ mainMenu();
 
 // !!! Future Development
 // -combine the nextPrompt as a function that accepts a callback function!
+// -no employees console.log for query results
