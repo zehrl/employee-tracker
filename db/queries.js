@@ -76,6 +76,37 @@ class Query {
         })
     }
 
+    viewEmployeesByManager(managerId) {
+
+        return new Promise((resolve, reject) => {
+
+            connection.query(`SELECT employees.first_name as "First Name", employees.last_name as "Last Name", roles.title as "Title" FROM employees LEFT JOIN roles ON employees.role_id = roles.id WHERE employees.manager_id = ? ORDER BY employees.first_name`, [
+                managerId
+            ], function (err, data) {
+                if (err) {
+
+                    throw err
+
+                } else {
+
+                    if (data.length === 0) {
+
+                        console.log("\nThere are no employees with that manager.")
+
+                    } else {
+
+                        console.table("\nEmployees under selected manager", data);
+
+                    }
+
+                    resolve(data)
+
+                };
+
+            })
+        })
+    }
+
     // Return all departments as an objct
     getAllDepartments() {
 
@@ -95,6 +126,27 @@ class Query {
 
         })
 
+    }
+
+    // Return all managers as an objct
+    getAllManagers() {
+
+        return new Promise((resolve, reject) => {
+
+            connection.query(`SELECT DISTINCT managers.id as "ID", managers.first_name as "First Name", managers.last_name as "Last Name", roles.title as "Title", departments.department_name as "Department" FROM employees as managers JOIN employees ON employees.manager_id = managers.id JOIN roles ON roles.id = managers.role_id JOIN departments ON departments.id = roles.department_id`, function (err, data) {
+                if (err) {
+
+                    throw err
+
+                } else {
+
+                    resolve(data)
+                    
+                };
+
+            })
+
+        })
     }
 
     viewBudget(department) {

@@ -17,6 +17,8 @@ const mainMenu = () => {
             name: "choice",
             message: "\n\nWhat would you like to do?",
             choices: [
+                
+                // Employees Options
                 "View All Employees",
                 "View All Employees by Department",
                 "View All Employees by Manager",
@@ -24,9 +26,15 @@ const mainMenu = () => {
                 "Remove Employee",
                 "Update Employee Role",
                 "Update Employee Manager",
+                
+                // Roles options
                 "View All Roles",
                 "Add Role",
                 "Remove Roll",
+
+                // !!! Department options?
+
+                // Exit
                 "Exit",
             ],
             loop: false,
@@ -92,11 +100,6 @@ const mainMenu = () => {
         })
 
 }
-
-// TO DO
-// add .then() and prompt() functions
-// make sure queries give you what you want!
-
 
 // View All Employees
 const viewAllEmployees = () => {
@@ -183,7 +186,7 @@ const viewEmployeesByDepartment = () => {
 
             })
             .catch(error => {
-                console.log("Uh oh! \n", error)
+                console.log("Uh oh! \n", error);
             })
     };
 
@@ -230,7 +233,93 @@ const viewEmployeesByDepartment = () => {
 
 
 // View All Employees by Manager
+const viewEmployeesByManager = () => {
 
+    // Call query to return managers object with: id, manager's first & last name
+    query.getAllManagers().then((data, err) => {
+
+        // Change object to inquirer friendly object using: name & value properties
+        const choices = data.map(entry => {
+            return {
+                // !!! combine first and last name and return as "name"
+                name: `${entry["First Name"]} ${entry["Last Name"]} (${entry.Department})`,
+                value: entry.ID
+            }
+        })
+
+        // Add choice to exit  
+        choices.push("Back to main menu")
+
+        // Prompt user for department selection
+        selectManagerPrompt(choices);
+
+    });
+
+    const selectManagerPrompt = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "managerId",
+                message: "\nSelect a Manager:",
+                choices
+            }
+        ])
+            .then(({ managerId }) => {
+
+                // Send user to main menu and exit current prompt
+                if (managerId === "Back to main menu") {
+                    mainMenu();
+                    return;
+                }
+
+                // Print employees list based on department managerId
+                query.viewEmployeesByManager(managerId).then(() => { nextPrompt() });
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error);
+            })
+    };
+
+    // Prompt that gives user next steps
+    const nextPrompt = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "\nWhat would you like to do?",
+                choices: [
+                    "Search again",
+                    "Main menu",
+                    "Exit"
+                ]
+            }
+        ])
+            .then(({ choice }) => {
+
+                switch (choice) {
+                    case "Search again":
+                        viewEmployeesByManager()
+                        break;
+
+                    case "Main menu":
+                        mainMenu();
+                        break;
+
+                    case "Exit":
+                        exit();
+                        break;
+
+                    default:
+                        break;
+                }
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error)
+            })
+    };
+}
 
 // Add Employee
 
@@ -254,3 +343,7 @@ const exit = () => {
 
 // Start program
 mainMenu();
+
+
+// !!! Future Development
+// -combine the nextPrompt as a function that accepts a callback function!
