@@ -231,7 +231,6 @@ const viewEmployeesByDepartment = () => {
 
 }
 
-
 // View All Employees by Manager
 const viewEmployeesByManager = () => {
 
@@ -323,17 +322,68 @@ const viewEmployeesByManager = () => {
 
 // Add Employee
 
+const addEmployee = () => {
+    // Prompt user: select department of new employee (or exit)
+    // Prompt user: select role of new employee (or exit)
+    // Prompt user: select manager of new employee (or exit)
+    // Prompt user: employee first name, last name
+    // query.insertEmployee(firstName, lastName, roleId, managerId)
+    // nextPrompt()
+}
+
 // Remove Employee
+
+const removeEmployee = () => {
+    // Prompt user: select department
+    // Prompt user: select employee
+    // query.deleteEmployee(employeeId)
+    // nextPrompt()
+}
 
 // Update Employee Role
 
+const updateEmployeeRole = () => {
+    // Prompt user: select department of employee
+    // Prompt user: select employee
+    // Prompt user: select employee's new role
+    // query. update employee's role_id
+    // nextPrompt()
+}
+
 // Update Employee Manager
+
+const updateEmployeeManager = () => {
+    // Prompt user: select department of employee
+    // Prompt user: select employee
+    // Prompt user: select new manager
+    // query.updateManager(employeId, newManagerId)
+    // nextPrompt
+
+}
 
 // View All Roles
 
+const viewAllRoles = () => {
+    query.viewAllRoles().then(()=>{mainMenu()})
+}
+
 // Add Role
 
+const addRole = () => {
+    // Prompt user: getAllDepartments() and select department
+    // Prompt user: Enter title of role & salary
+    // insertRole(title, salary, departmentId)
+    // nextPrompt()
+}
+
 // Remove Role
+
+const removeRoll = () => {
+    // Prompt user: Select department
+    // Prompt user: Select role -> getRolesByDepartment(department_id)
+    // deleteRole(roleId)
+    // nextPrompt()
+}
 
 // Exit
 const exit = () => {

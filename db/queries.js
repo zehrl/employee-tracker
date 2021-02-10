@@ -32,16 +32,25 @@ class Query {
     }
 
     viewAllDepartments() {
-        connection.query(`SELECT id as "ID", department_name as "Department Name" FROM departments`, function (err, data) {
-            if (err) throw err;
-            console.table("\nAll Departments", data);
+
+        return new Promise((resolve, reject) => {
+
+            connection.query(`SELECT id as "ID", department_name as "Department Name" FROM departments`, function (err, data) {
+                if (err) throw err;
+                console.table("\nAll Departments", data);
+            })
+
         })
     }
 
     viewAllRoles() {
-        connection.query(`SELECT id as "ID", title as "Job Title", salary as "Salary" FROM roles`, function (err, data) {
-            if (err) throw err;
-            console.table("\nAll Roles", data);
+
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT roles.id as "ID", departments.department_name as "Department", roles.title as "Job Title", roles.salary as "Salary" FROM roles JOIN departments ON roles.department_id = departments.id`, function (err, data) {
+                if (err) throw err;
+                console.table("\nAll Roles", data);
+                resolve(data);
+            })
         })
     }
 
@@ -141,7 +150,7 @@ class Query {
                 } else {
 
                     resolve(data)
-                    
+
                 };
 
             })
