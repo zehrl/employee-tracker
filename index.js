@@ -29,7 +29,7 @@ const mainMenu = () => {
 
                 // Roles options
                 "View All Roles",
-                "Add Role",
+                // "Add Role",
                 "Remove Roll",
 
                 // !!! Department options?
