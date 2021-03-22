@@ -22,10 +22,10 @@ const mainMenu = () => {
                 "View All Employees",
                 "View All Employees by Department",
                 "View All Employees by Manager",
-                "Add Employee",
-                "Remove Employee",
-                "Update Employee Role",
-                "Update Employee Manager",
+                // "Add Employee",
+                // "Remove Employee",
+                // "Update Employee Role",
+                // "Update Employee Manager",
 
                 // Roles options
                 "View All Roles",
@@ -323,13 +323,81 @@ const viewEmployeesByManager = () => {
 // Add Employee
 
 const addEmployee = () => {
-    // Prompt user: select department of new employee (or exit)
-    // Prompt user: select role of new employee (or exit)
     // Prompt user: select manager of new employee (or exit)
+    query.getAllManagers().then((data, err) => {
+
+        // Change object to inquirer friendly object using: name & value properties
+        const choices = data.map(entry => {
+            return {
+                // !!! combine first and last name and return as "name"
+                name: `${entry["First Name"]} ${entry["Last Name"]} (${entry.Department})`,
+                department: entry["Department"],
+                value: entry.ID
+            }
+        })
+
+        // Add choice to exit  
+        choices.push("Back to main menu")
+
+        // Prompt user for manager selection
+        selectManagerPrompt(choices);
+
+    });
+
+    const selectManagerPrompt = (choices) => {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "managerId",
+                message: "\nSelect a Manager for the new employee:",
+                choices
+            }
+        ])
+            .then(({ managerId }) => {
+
+                // Send user to main menu and exit current prompt
+                if (managerId === "Back to main menu") {
+                    mainMenu();
+                    return;
+                }
+
+                // Prompt for first and last name of new employee
+                query.getRolesByDepartment().then(() => newEmployeeNamePrompt());
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error);
+            })
+    };
+
     // Prompt user: employee first name, last name
+    const newEmployeeNamePrompt = (roles) => {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "firstName",
+                message: "\nEnter employee's first name: ",
+            },
+            {
+                type: "input",
+                name: "lastName",
+                message: "\nEnter employee's last name: ",
+            }
+
+        ])
+            .then(({ firstName, lastName }) => {
+
+                console.log("Data: ", firstName, lastName)
+
+            })
+            .catch(error => {
+                console.log("Uh oh! \n", error)
+            })
+    };
+};
+
     // query.insertEmployee(firstName, lastName, roleId, managerId)
     // nextPrompt()
-}
 
 // Remove Employee
 
@@ -529,7 +597,7 @@ const removeRole = () => {
             .catch(error => {
                 console.log("Uh oh! \n", error)
             })
-        }
+    }
 
 }
 
@@ -546,3 +614,4 @@ mainMenu();
 // !!! Future Development
 // -combine the nextPrompt as a function that accepts a callback function!
 // -no employees console.log for query results
+
